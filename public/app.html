@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>StudyNovaAI — Dashboard</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/logo.svg"/>
+  <link rel="stylesheet" href="/css/app.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body>
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <img src="/assets/logo.svg" alt="Logo" class="sidebar-logo"/>
+      <div>
+        <div class="sidebar-brand">StudyNova<span>AI</span></div>
+        <div class="sidebar-tagline">Study Smarter 🚀</div>
+      </div>
+      <button class="sidebar-close" onclick="toggleSidebar()">✕</button>
+    </div>
+
+    <div class="user-card" id="userCard">
+      <div class="user-avatar" id="userAvatar">A</div>
+      <div>
+        <div class="user-name" id="userName">Loading...</div>
+        <div class="user-email" id="userEmail"></div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active" data-page="dashboard" onclick="navigate('dashboard',this)">
+        <span class="nav-icon">🏠</span><span>Dashboard</span>
+      </a>
+      <a href="#" class="nav-item" data-page="flashcards" onclick="navigate('flashcards',this)">
+        <span class="nav-icon">⚡</span><span>Flashcards</span>
+      </a>
+      <a href="#" class="nav-item" data-page="notes" onclick="navigate('notes',this)">
+        <span class="nav-icon">📝</span><span>Smart Notes</span>
+      </a>
+      <a href="#" class="nav-item" data-page="flowcharts" onclick="navigate('flowcharts',this)">
+        <span class="nav-icon">🔀</span><span>Flowcharts</span>
+      </a>
+      <a href="#" class="nav-item" data-page="chatbot" onclick="navigate('chatbot',this)">
+        <span class="nav-icon">🤖</span><span>AI Tutor</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a href="/" class="sidebar-logout" onclick="logout()">
+        <span>⬅</span> Logout
+      </a>
+    </div>
+  </aside>
+
+  <!-- ===== MAIN ===== -->
+  <div class="main-wrap">
+
+    <!-- Top bar -->
+    <header class="topbar">
+      <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+      <div class="topbar-title" id="topbarTitle">Dashboard</div>
+      <div class="topbar-right">
+        <div class="topbar-user" id="topbarUser">
+          <div class="topbar-avatar" id="topbarAvatar">A</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ===== PAGES ===== -->
+    <main class="content">
+
+      <!-- DASHBOARD PAGE -->
+      <div class="page active" id="page-dashboard">
+        <div class="page-header">
+          <h1 class="page-title">Welcome back, <span id="dashUser">there</span>! 👋</h1>
+          <p class="page-sub">What would you like to study today?</p>
+        </div>
+
+        <div class="feature-cards-grid">
+          <div class="dash-card" onclick="navigate('flashcards',null)">
+            <div class="dash-card-icon" style="background:rgba(99,102,241,0.1)">⚡</div>
+            <div class="dash-card-body">
+              <h3>Flashcards</h3>
+              <p>Generate Q&amp;A flashcards from any file instantly</p>
+            </div>
+            <span class="dash-card-arrow">→</span>
+          </div>
+          <div class="dash-card" onclick="navigate('notes',null)">
+            <div class="dash-card-icon" style="background:rgba(34,211,238,0.1)">📝</div>
+            <div class="dash-card-body">
+              <h3>Smart Notes</h3>
+              <p>Create structured handwritten-style study notes</p>
+            </div>
+            <span class="dash-card-arrow">→</span>
+          </div>
+          <div class="dash-card" onclick="navigate('flowcharts',null)">
+            <div class="dash-card-icon" style="background:rgba(168,85,247,0.1)">🔀</div>
+            <div class="dash-card-body">
+              <h3>Flowcharts</h3>
+              <p>Visual concept maps and diagrams from your content</p>
+            </div>
+            <span class="dash-card-arrow">→</span>
+          </div>
+          <div class="dash-card" onclick="navigate('chatbot',null)">
+            <div class="dash-card-icon" style="background:rgba(16,185,129,0.1)">🤖</div>
+            <div class="dash-card-body">
+              <h3>AI Tutor</h3>
+              <p>Chat with AI — ask questions, get explanations, summarize docs</p>
+            </div>
+            <span class="dash-card-arrow">→</span>
+          </div>
+        </div>
+
+        <div class="dash-info">
+          <div class="info-card">
+            <div class="info-icon">📤</div>
+            <div>
+              <h4>How to use StudyNovaAI</h4>
+              <p>Click any feature above → Upload your study file (PDF, DOCX, JPG, TXT) → AI instantly generates your study material. No manual work needed.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FLASHCARDS PAGE -->
+      <div class="page" id="page-flashcards">
+        <div class="page-header">
+          <h1 class="page-title">⚡ Flashcard Generator</h1>
+          <p class="page-sub">Upload your study material and get perfectly crafted flashcards</p>
+        </div>
+
+        <div class="upload-zone" id="fcUploadZone">
+          <div class="upload-inner">
+            <div class="upload-icon">📂</div>
+            <h3>Upload Your Study File</h3>
+            <p>Drop a file here or click to browse</p>
+            <p class="upload-types">PDF · DOCX · TXT · JPG · PNG · up to 50MB</p>
+            <input type="file" id="fcFile" accept=".pdf,.docx,.doc,.txt,.jpg,.jpeg,.png" style="display:none" onchange="handleFcUpload()"/>
+            <button class="btn btn-primary" onclick="document.getElementById('fcFile').click()">Get Started</button>
+          </div>
+        </div>
+
+        <div class="generating-state hidden" id="fcGenerating">
+          <div class="gen-spinner"></div>
+          <p>AI is reading your file and generating flashcards...</p>
+        </div>
+
+        <div class="flashcards-result hidden" id="fcResult">
+          <div class="result-header">
+            <h3 id="fcTitle"></h3>
+            <div class="result-actions">
+              <button class="btn-sm" onclick="resetFc()">📂 New File</button>
+              <button class="btn-sm btn-primary-sm" onclick="shuffleCards()">🔀 Shuffle</button>
+            </div>
+          </div>
+          <div class="fc-progress">
+            <span id="fcProgress">Card 1 of 12</span>
+            <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+          </div>
+          <div class="fc-arena">
+            <button class="fc-nav-btn" id="fcPrev" onclick="prevCard()">‹</button>
+            <div class="flashcard" id="flashcard" onclick="flipCard()">
+              <div class="flashcard-inner" id="flashcardInner">
+                <div class="flashcard-front">
+                  <div class="card-label">QUESTION</div>
+                  <p id="fcQuestion"></p>
+                  <div class="card-hint">Click to reveal answer</div>
+                </div>
+                <div class="flashcard-back">
+                  <div class="card-label">ANSWER</div>
+                  <p id="fcAnswer"></p>
+                </div>
+              </div>
+            </div>
+            <button class="fc-nav-btn" id="fcNext" onclick="nextCard()">›</button>
+          </div>
+          <div class="fc-dots" id="fcDots"></div>
+          <div class="fc-all-grid" id="fcAllGrid"></div>
+        </div>
+
+        <!-- Saved sets -->
+        <div class="saved-section" id="fcSaved">
+          <h3 class="saved-title">📚 Saved Flashcard Sets</h3>
+          <div id="fcSavedList" class="saved-list"></div>
+        </div>
+      </div>
+
+      <!-- NOTES PAGE -->
+      <div class="page" id="page-notes">
+        <div class="page-header">
+          <h1 class="page-title">📝 Smart Notes</h1>
+          <p class="page-sub">Upload a file to generate handwritten-style study notes — then edit and convert to flashcards</p>
+        </div>
+
+        <div class="upload-zone" id="notesUploadZone">
+          <div class="upload-inner">
+            <div class="upload-icon">📂</div>
+            <h3>Upload Your Study File</h3>
+            <p>Drop a file here or click to browse</p>
+            <p class="upload-types">PDF · DOCX · TXT · JPG · PNG · up to 50MB</p>
+            <input type="file" id="notesFile" accept=".pdf,.docx,.doc,.txt,.jpg,.jpeg,.png" style="display:none" onchange="handleNotesUpload()"/>
+            <button class="btn btn-primary" onclick="document.getElementById('notesFile').click()">Get Started</button>
+          </div>
+        </div>
+
+        <div class="generating-state hidden" id="notesGenerating">
+          <div class="gen-spinner"></div>
+          <p>AI is creating your study notes...</p>
+        </div>
+
+        <div class="notes-result hidden" id="notesResult">
+          <div class="result-header">
+            <input class="notes-title-input" id="notesTitleInput" value=""/>
+            <div class="result-actions">
+              <button class="btn-sm" onclick="resetNotes()">📂 New File</button>
+              <button class="btn-sm" onclick="toggleEdit()">✏️ Edit</button>
+              <button class="btn-sm btn-primary-sm" onclick="notesToFlashcards()">⚡ → Flashcards</button>
+              <button class="btn-sm btn-save-sm" onclick="saveNote()">💾 Save</button>
+            </div>
+          </div>
+          <div class="notes-body">
+            <div class="notes-view" id="notesView"></div>
+            <textarea class="notes-editor hidden" id="notesEditor" placeholder="Edit your notes here..."></textarea>
+          </div>
+        </div>
+
+        <div class="saved-section" id="notesSaved">
+          <h3 class="saved-title">📚 Saved Notes</h3>
+          <div id="notesSavedList" class="saved-list"></div>
+        </div>
+      </div>
+
+      <!-- FLOWCHART PAGE -->
+      <div class="page" id="page-flowcharts">
+        <div class="page-header">
+          <h1 class="page-title">🔀 Flowchart Generator</h1>
+          <p class="page-sub">Upload content to get a visual concept map and diagram with summary</p>
+        </div>
+
+        <div class="upload-zone" id="fcwUploadZone">
+          <div class="upload-inner">
+            <div class="upload-icon">📂</div>
+            <h3>Upload Your Study File</h3>
+            <p>Drop a file here or click to browse</p>
+            <p class="upload-types">PDF · DOCX · TXT · JPG · PNG · up to 50MB</p>
+            <input type="file" id="fcwFile" accept=".pdf,.docx,.doc,.txt,.jpg,.jpeg,.png" style="display:none" onchange="handleFlowchartUpload()"/>
+            <button class="btn btn-primary" onclick="document.getElementById('fcwFile').click()">Get Started</button>
+          </div>
+        </div>
+
+        <div class="generating-state hidden" id="fcwGenerating">
+          <div class="gen-spinner"></div>
+          <p>AI is creating your flowchart...</p>
+        </div>
+
+        <div class="flowchart-result hidden" id="fcwResult">
+          <div class="result-header">
+            <h3>Visual Concept Map</h3>
+            <div class="result-actions">
+              <button class="btn-sm" onclick="resetFlowchart()">📂 New File</button>
+            </div>
+          </div>
+          <div class="fcw-summary" id="fcwSummary"></div>
+          <div class="mermaid-wrap">
+            <div class="mermaid" id="mermaidChart"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHATBOT PAGE -->
+      <div class="page" id="page-chatbot">
+        <div class="page-header">
+          <h1 class="page-title">🤖 AI Study Tutor</h1>
+          <p class="page-sub">Ask anything — your AI tutor can read documents, explain concepts, and help with homework</p>
+        </div>
+
+        <div class="chat-layout">
+          <div class="chat-sidebar-panel">
+            <h4>📎 Upload Document</h4>
+            <p class="chat-upload-sub">Upload a file to give AI context about your subject</p>
+            <div class="chat-upload-zone" id="chatUploadZone">
+              <input type="file" id="chatFile" accept=".pdf,.docx,.doc,.txt,.jpg,.jpeg,.png" style="display:none" onchange="handleChatFile()"/>
+              <button class="btn-sm" onclick="document.getElementById('chatFile').click()">📂 Choose File</button>
+              <div class="chat-file-name" id="chatFileName">No file chosen</div>
+            </div>
+            <div class="chat-actions">
+              <button class="btn-sm" onclick="clearChat()">🗑 Clear Chat</button>
+            </div>
+            <div class="chat-capabilities">
+              <h5>Capabilities</h5>
+              <ul>
+                <li>📄 Read &amp; summarize PDFs</li>
+                <li>🔍 Explain complex concepts</li>
+                <li>📐 Solve math &amp; science</li>
+                <li>📚 A-Level subject expert</li>
+                <li>✍️ Homework help</li>
+                <li>🌐 Web search knowledge</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="chat-main">
+            <div class="chat-messages" id="chatMessages">
+              <div class="chat-welcome">
+                <div class="chat-welcome-icon">🤖</div>
+                <h3>Hi! I'm your StudyNova AI Tutor</h3>
+                <p>I'm powered by Claude AI and can help you understand any subject, explain complex topics, solve problems step-by-step, and analyse your uploaded documents.</p>
+                <div class="chat-starters">
+                  <button class="starter-btn" onclick="sendStarter('Explain photosynthesis in simple terms')">Explain photosynthesis</button>
+                  <button class="starter-btn" onclick="sendStarter('Help me understand the French Revolution')">French Revolution</button>
+                  <button class="starter-btn" onclick="sendStarter('How do I solve quadratic equations?')">Quadratic equations</button>
+                  <button class="starter-btn" onclick="sendStarter('What are Newton\'s laws of motion?')">Newton's laws</button>
+                </div>
+              </div>
+            </div>
+            <div class="chat-input-wrap">
+              <button class="chat-attach-btn" onclick="document.getElementById('chatFile').click()" title="Attach file">📎</button>
+              <textarea
+                class="chat-input"
+                id="chatInput"
+                placeholder="Ask your AI tutor anything..."
+                rows="1"
+                onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage()}"
+                oninput="autoResize(this)"
+              ></textarea>
+              <button class="chat-send-btn" onclick="sendMessage()" id="chatSendBtn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>
